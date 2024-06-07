@@ -289,6 +289,11 @@ services:
       RELYT_USER: postgres
       RELYT_PASSWORD: difyai123456
       RELYT_DATABASE: postgres
+      # ElasticSearch configurations
+      ELASTICSEARCH_HOST: 127.0.0.1
+      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_API_KEY_ID: difyai
+      ELASTICSEARCH_API_KEY: difyai123456
       # pgvector configurations
       PGVECTOR_HOST: pgvector
       PGVECTOR_PORT: 5432
