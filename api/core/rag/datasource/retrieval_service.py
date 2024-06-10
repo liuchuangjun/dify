@@ -86,7 +86,7 @@ class RetrievalService:
             exception_message = ';\n'.join(exceptions)
             raise Exception(exception_message)
 
-        if retrival_method == 'hybrid_search':
+        if retrival_method == RetrievalMethod.HYBRID_SEARCH:
             data_post_processor = DataPostProcessor(str(dataset.tenant_id), reranking_model, False)
             all_documents = data_post_processor.invoke(
                 query=query,
