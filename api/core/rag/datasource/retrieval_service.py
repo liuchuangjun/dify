@@ -16,6 +16,14 @@ class RetrievalMethod(str, Enum):
     FULL_TEXT_SEARCH = 'full_text_search'
     HYBRID_SEARCH = 'hybrid_search'
 
+    @staticmethod
+    def is_support_semantic_search(retrieval_method: str) -> bool:
+        return retrieval_method in {RetrievalMethod.SEMANTIC_SEARCH, RetrievalMethod.HYBRID_SEARCH}
+
+    @staticmethod
+    def is_support_fulltext_search(retrieval_method: str) -> bool:
+        return retrieval_method in {RetrievalMethod.FULL_TEXT_SEARCH, RetrievalMethod.HYBRID_SEARCH}
+
 
 default_retrieval_model = {
     'search_method': RetrievalMethod.SEMANTIC_SEARCH,
@@ -55,7 +63,7 @@ class RetrievalService:
             threads.append(keyword_thread)
             keyword_thread.start()
         # retrieval_model source with semantic
-        if retrival_method in {RetrievalMethod.SEMANTIC_SEARCH, RetrievalMethod.HYBRID_SEARCH}:
+        if RetrievalMethod.is_support_semantic_search(retrival_method):
             embedding_thread = threading.Thread(target=RetrievalService.embedding_search, kwargs={
                 'flask_app': current_app._get_current_object(),
                 'dataset_id': dataset_id,
@@ -71,7 +79,7 @@ class RetrievalService:
             embedding_thread.start()
 
         # retrieval source with full text
-        if retrival_method in [RetrievalMethod.FULL_TEXT_SEARCH, RetrievalMethod.HYBRID_SEARCH]:
+        if RetrievalMethod.is_support_fulltext_search(retrival_method):
             full_text_index_thread = threading.Thread(target=RetrievalService.full_text_index_search, kwargs={
                 'flask_app': current_app._get_current_object(),
                 'dataset_id': dataset_id,
