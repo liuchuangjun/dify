@@ -15,6 +15,7 @@ from core.errors.error import LLMBadRequestError, ProviderTokenNotInitError
 from core.indexing_runner import IndexingRunner
 from core.model_runtime.entities.model_entities import ModelType
 from core.provider_manager import ProviderManager
+from core.rag.datasource.retrieval_service import RetrievalMethod
 from core.rag.datasource.vdb.vector_type import VectorType
 from core.rag.extractor.entity.extract_setting import ExtractSetting
 from extensions.ext_database import db
@@ -482,13 +483,15 @@ class DatasetRetrievalSettingApi(Resource):
             case VectorType.MILVUS | VectorType.RELYT | VectorType.PGVECTOR | VectorType.TIDB_VECTOR:
                 return {
                     'retrieval_method': [
-                        'semantic_search'
+                        RetrievalMethod.SEMANTIC_SEARCH
                     ]
                 }
             case VectorType.QDRANT | VectorType.WEAVIATE:
                 return {
                     'retrieval_method': [
-                        'semantic_search', 'full_text_search', 'hybrid_search'
+                        RetrievalMethod.SEMANTIC_SEARCH,
+                        RetrievalMethod.FULL_TEXT_SEARCH,
+                        RetrievalMethod.HYBRID_SEARCH,
                     ]
                 }
             case _:
@@ -504,13 +507,15 @@ class DatasetRetrievalSettingMockApi(Resource):
             case VectorType.MILVUS | VectorType.RELYT | VectorType.PGVECTOR | VectorType.TIDB_VECTOR:
                 return {
                     'retrieval_method': [
-                        'semantic_search'
+                        RetrievalMethod.SEMANTIC_SEARCH
                     ]
                 }
             case VectorType.QDRANT | VectorType.WEAVIATE:
                 return {
                     'retrieval_method': [
-                        'semantic_search', 'full_text_search', 'hybrid_search'
+                        RetrievalMethod.SEMANTIC_SEARCH,
+                        RetrievalMethod.FULL_TEXT_SEARCH,
+                        RetrievalMethod.HYBRID_SEARCH,
                     ]
                 }
             case _:

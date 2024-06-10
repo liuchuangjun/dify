@@ -14,6 +14,7 @@ from core.errors.error import LLMBadRequestError, ProviderTokenNotInitError
 from core.model_manager import ModelManager
 from core.model_runtime.entities.model_entities import ModelType
 from core.rag.datasource.keyword.keyword_factory import Keyword
+from core.rag.datasource.retrieval_service import RetrievalMethod
 from core.rag.models.document import Document as RAGDocument
 from events.dataset_event import dataset_was_deleted
 from events.document_event import document_was_deleted
@@ -574,7 +575,7 @@ class DocumentService:
                 dataset.collection_binding_id = dataset_collection_binding.id
                 if not dataset.retrieval_model:
                     default_retrieval_model = {
-                        'search_method': 'semantic_search',
+                        'search_method': RetrievalMethod.SEMANTIC_SEARCH,
                         'reranking_enable': False,
                         'reranking_model': {
                             'reranking_provider_name': '',
@@ -895,7 +896,7 @@ class DocumentService:
                 retrieval_model = document_data['retrieval_model']
             else:
                 default_retrieval_model = {
-                    'search_method': 'semantic_search',
+                    'search_method': RetrievalMethod.SEMANTIC_SEARCH,
                     'reranking_enable': False,
                     'reranking_model': {
                         'reranking_provider_name': '',
