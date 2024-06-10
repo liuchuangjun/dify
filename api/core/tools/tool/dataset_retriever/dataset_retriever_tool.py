@@ -1,7 +1,8 @@
 
 from pydantic import BaseModel, Field
 
-from core.rag.datasource.retrival_methods import RetrievalMethod, RetrievalService
+from core.rag.datasource.retrieval_service import RetrievalService
+from core.rag.datasource.retrival_methods import RetrievalMethod
 from core.tools.tool.dataset_retriever.dataset_retriever_base_tool import DatasetRetrieverBaseTool
 from extensions.ext_database import db
 from models.dataset import Dataset, Document, DocumentSegment
