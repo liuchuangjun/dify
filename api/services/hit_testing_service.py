@@ -9,8 +9,8 @@ from core.model_manager import ModelManager
 from core.model_runtime.entities.model_entities import ModelType
 from core.rag.datasource.entity.embedding import Embeddings
 from core.rag.datasource.retrieval_service import RetrievalService
-from core.rag.datasource.retrival_methods import RetrievalMethod
 from core.rag.models.document import Document
+from core.rag.retrieval.retrival_methods import RetrievalMethod
 from extensions.ext_database import db
 from models.account import Account
 from models.dataset import Dataset, DatasetQuery, DocumentSegment
