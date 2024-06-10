@@ -13,7 +13,7 @@ from flask import current_app
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import JSONB
 
-from core.rag.datasource.retrieval_service import RetrievalMethod
+from core.rag.datasource.retrival_methods import RetrievalMethod
 from extensions.ext_database import db
 from extensions.ext_storage import storage
 from models import StringUUID

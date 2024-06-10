@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from core.callback_handler.index_tool_callback_handler import DatasetIndexToolCallbackHandler
 from core.model_manager import ModelManager
 from core.model_runtime.entities.model_entities import ModelType
-from core.rag.datasource.retrieval_service import RetrievalMethod, RetrievalService
+from core.rag.datasource.retrival_methods import RetrievalMethod, RetrievalService
 from core.rag.rerank.rerank import RerankRunner
 from core.tools.tool.dataset_retriever.dataset_retriever_base_tool import DatasetRetrieverBaseTool
 from extensions.ext_database import db

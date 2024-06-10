@@ -10,7 +10,7 @@ from core.errors.error import ModelCurrentlyNotSupportError, ProviderTokenNotIni
 from core.model_manager import ModelInstance, ModelManager
 from core.model_runtime.entities.model_entities import ModelFeature, ModelType
 from core.model_runtime.model_providers.__base.large_language_model import LargeLanguageModel
-from core.rag.datasource.retrieval_service import RetrievalMethod
+from core.rag.datasource.retrival_methods import RetrievalMethod
 from core.rag.retrieval.dataset_retrieval import DatasetRetrieval
 from core.workflow.entities.base_node_data_entities import BaseNodeData
 from core.workflow.entities.node_entities import NodeRunResult, NodeType
