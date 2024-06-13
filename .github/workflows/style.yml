@@ -99,7 +99,7 @@ jobs:
             **.sh
             **.yaml
             **.yml
-            Dockerfile
+            **Dockerfile
 
       - name: Super-linter
         uses: super-linter/super-linter/slim@v6
