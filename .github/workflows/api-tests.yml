@@ -107,10 +107,10 @@ jobs:
             api/poetry.lock
 
       - name: Poetry check
-        run: poetry check -C api
+        run: poetry check -C api --lock
 
       - name: Install dependencies
-        run: poetry install -C api --with dev
+        run: poetry install --sync -C api --with dev
 
       - name: Run Unit tests
         run: poetry run -C api bash dev/pytest/pytest_unit_tests.sh
