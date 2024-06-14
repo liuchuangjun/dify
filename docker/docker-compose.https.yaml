@@ -1,0 +1,8 @@
+version: '3'
+services:
+    # adds https support to nginx service
+    nginx:
+      volumes:
+        - ./nginx/ssl:/etc/ssl
+      ports:
+        - "${NGINX_SSL_PORT:-443}:443"

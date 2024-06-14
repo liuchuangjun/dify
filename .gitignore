@@ -151,6 +151,9 @@ docker/volumes/minio/*
 docker/volumes/milvus/*
 docker/volumes/chroma/*
 
+# docker env files
+!docker/*.env.example
+
 sdks/python-client/build
 sdks/python-client/dist
 sdks/python-client/dify_client.egg-info
