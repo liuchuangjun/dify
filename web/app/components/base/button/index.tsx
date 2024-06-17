@@ -1,4 +1,4 @@
-import type { FC, MouseEventHandler, PropsWithChildren } from 'react'
+import type { FC, MouseEventHandler, PropsWithChildren, CSSProperties } from 'react'
 import React, { memo } from 'react'
 import classNames from 'classnames'
 import Spinner from '../spinner'
@@ -8,6 +8,7 @@ export type IButtonProps = PropsWithChildren<{
   className?: string
   disabled?: boolean
   loading?: boolean
+  styleCss?: CSSProperties
   tabIndex?: number
   onClick?: MouseEventHandler<HTMLDivElement>
 }>
@@ -18,6 +19,7 @@ const Button: FC<IButtonProps> = ({
   children,
   className,
   onClick,
+  styleCss,
   loading = false,
   tabIndex,
 }) => {
@@ -39,6 +41,7 @@ const Button: FC<IButtonProps> = ({
       className={classNames('btn', typeClassNames, className)}
       tabIndex={tabIndex}
       onClick={disabled ? undefined : onClick}
+      style={styleCss}
     >
       {children}
       {/* Spinner is hidden when loading is false */}

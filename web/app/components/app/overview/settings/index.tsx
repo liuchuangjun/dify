@@ -17,6 +17,7 @@ import { useToastContext } from '@/app/components/base/toast'
 import { languages } from '@/i18n/language'
 
 export type ISettingsModalProps = {
+  isChat: boolean
   appInfo: AppDetailResponse
   isShow: boolean
   defaultValue?: string
@@ -28,6 +29,8 @@ export type ConfigParams = {
   title: string
   description: string
   default_language: string
+  chat_color_theme: string
+  chat_color_theme_inverted: boolean
   prompt_public: boolean
   copyright: string
   privacy_policy: string
@@ -39,6 +42,7 @@ export type ConfigParams = {
 const prefixSettings = 'appOverview.overview.appInfo.settings'
 
 const SettingsModal: FC<ISettingsModalProps> = ({
+  isChat,
   appInfo,
   isShow = false,
   onClose,
@@ -47,8 +51,25 @@ const SettingsModal: FC<ISettingsModalProps> = ({
   const { notify } = useToastContext()
   const [isShowMore, setIsShowMore] = useState(false)
   const { icon, icon_background } = appInfo
-  const { title, description, copyright, privacy_policy, custom_disclaimer, default_language } = appInfo.site
-  const [inputInfo, setInputInfo] = useState({ title, desc: description, copyright, privacyPolicy: privacy_policy, customDisclaimer: custom_disclaimer })
+  const {
+    title,
+    description,
+    chat_color_theme,
+    chat_color_theme_inverted,
+    copyright,
+    privacy_policy,
+    custom_disclaimer,
+    default_language,
+  } = appInfo.site
+  const [inputInfo, setInputInfo] = useState({
+    title,
+    desc: description,
+    chatColorTheme: chat_color_theme,
+    chatColorThemeInverted: chat_color_theme_inverted,
+    copyright,
+    privacyPolicy: privacy_policy,
+    customDisclaimer: custom_disclaimer,
+  })
   const [language, setLanguage] = useState(default_language)
   const [saveLoading, setSaveLoading] = useState(false)
   const { t } = useTranslation()
@@ -57,7 +78,15 @@ const SettingsModal: FC<ISettingsModalProps> = ({
   const [emoji, setEmoji] = useState({ icon, icon_background })
 
   useEffect(() => {
-    setInputInfo({ title, desc: description, copyright, privacyPolicy: privacy_policy, customDisclaimer: custom_disclaimer })
+    setInputInfo({
+      title,
+      desc: description,
+      chatColorTheme: chat_color_theme,
+      chatColorThemeInverted: chat_color_theme_inverted,
+      copyright,
+      privacyPolicy: privacy_policy,
+      customDisclaimer: custom_disclaimer,
+    })
     setLanguage(default_language)
     setEmoji({ icon, icon_background })
   }, [appInfo])
@@ -74,11 +103,30 @@ const SettingsModal: FC<ISettingsModalProps> = ({
       notify({ type: 'error', message: t('app.newApp.nameNotEmpty') })
       return
     }
+
+    const validateColorHex = (hex: string | null) => {
+      if (hex === null || hex.length === 0)
+        return true
+
+      const regex = /#([A-Fa-f0-9]{6})/
+      const check = regex.test(hex)
+      return check
+    }
+
+    if (inputInfo !== null) {
+      if (!validateColorHex(inputInfo.chatColorTheme)) {
+        notify({ type: 'error', message: t(`${prefixSettings}.invalidHexMessage`) })
+        return
+      }
+    }
+
     setSaveLoading(true)
     const params = {
       title: inputInfo.title,
       description: inputInfo.desc,
       default_language: language,
+      chat_color_theme: inputInfo.chatColorTheme,
+      chat_color_theme_inverted: inputInfo.chatColorThemeInverted,
       prompt_public: false,
       copyright: inputInfo.copyright,
       privacy_policy: inputInfo.privacyPolicy,
@@ -93,7 +141,13 @@ const SettingsModal: FC<ISettingsModalProps> = ({
 
   const onChange = (field: string) => {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setInputInfo(item => ({ ...item, [field]: e.target.value }))
+      let value: string | boolean
+      if (e.target.type === 'checkbox')
+        value = (e.target as HTMLInputElement).checked
+      else
+        value = e.target.value
+
+      setInputInfo(item => ({ ...item, [field]: value }))
     }
   }
 
@@ -134,6 +188,22 @@ const SettingsModal: FC<ISettingsModalProps> = ({
           defaultValue={language}
           onSelect={item => setLanguage(item.value as Language)}
         />
+        {isChat && <> <div className={`mt-8 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.chatColorTheme`)}</div>
+          <p className={`mt-1 ${s.settingsTip} text-gray-500`}>{t(`${prefixSettings}.chatColorThemeDesc`)}</p>
+          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+            value={inputInfo.chatColorTheme ?? ''}
+            onChange={onChange('chatColorTheme')}
+            placeholder= 'E.g #A020F0'
+          />
+          <div className='flex gap-x-1 items-center'>
+            <input
+              type='checkbox'
+              className="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-700"
+              onChange={onChange('chatColorThemeInverted')}
+              checked={inputInfo.chatColorThemeInverted}>
+            </input>
+            <p className={`mt-1 ${s.settingsTip} text-gray-500 pb-1 ml-1`}>{t(`${prefixSettings}.chatColorThemeInverted`)}</p>
+          </div> </>}
         {!isShowMore && <div className='w-full cursor-pointer mt-8' onClick={() => setIsShowMore(true)}>
           <div className='flex justify-between'>
             <div className={`font-medium ${s.settingTitle} flex-grow text-gray-900`}>{t(`${prefixSettings}.more.entry`)}</div>
